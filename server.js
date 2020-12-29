@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const cors = require("cors");
@@ -17,7 +18,7 @@ const db = knex({
 const app = express();
 app.use(express.json());
 app.use(cors());
-const PORT = 5000;
+const PORT = process.env.PORT;
 
 app.get("/", (req, res) => {
   res.status(200).json("Success");
@@ -43,6 +44,6 @@ app.post("/imageurl", (req, res) => {
   image.handleApiCall(req, res);
 });
 
-app.listen(process.env.PORT || PORT, () => {
-  console.log(`**Server is running on port ${process.env.PORT}`);
+app.listen(PORT, () => {
+  console.log(`**Server is running on port ${PORT}`);
 });
