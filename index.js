@@ -15,35 +15,35 @@ const db = knex({
   },
 });
 
-const app = express();
-app.use(express.json());
-app.use(cors());
+const server = express();
+server.use(express.json());
+server.use(cors());
 const PORT = process.env.PORT || 5000;
 
-app.get("/", (req, res) => {
+server.get("/", (req, res) => {
   res.status(200).json("Success");
 });
 
-app.post("/signin", (req, res) => {
+server.post("/signin", (req, res) => {
   signin.handleSignin(req, res, db, bcrypt);
 });
 
-app.post("/register", (req, res) => {
+server.post("/register", (req, res) => {
   register.handleRegister(req, res, db, bcrypt);
 });
 
-app.get("/profile/:id", (req, res) => {
+server.get("/profile/:id", (req, res) => {
   profile.hanldleProfileGet(req, res, db);
 });
 
-app.put("/image", (req, res) => {
+server.put("/image", (req, res) => {
   image.handleImage(req, res, db);
 });
 
-app.post("/imageurl", (req, res) => {
+server.post("/imageurl", (req, res) => {
   image.handleApiCall(req, res);
 });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`**Server is running on port ${PORT}`);
 });
