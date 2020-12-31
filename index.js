@@ -71,7 +71,7 @@ server.post("/signin", (req, res) => {
 });
 
 server.post("/register", (req, res) => {
-  register.handleRegister(req, res, db, bcrypt);
+  register.handleRegister(req, res, client, bcrypt);
 });
 
 server.get("/profile/:id", (req, res) => {
