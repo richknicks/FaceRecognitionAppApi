@@ -7,43 +7,13 @@ const register = require("./controllers/register");
 const signin = require("./controllers/signin");
 const profile = require("./controllers/profile");
 const image = require("./controllers/image");
-// const db = knex({
-//   client: "pg",
-//   connection: {
-//     connectionString: process.env.DATABASE_URL,
-//     ssl: {
-//       rejectUnauthorized: false,
-//     },
-//   },
-// });
-// const { Pool } = require("pg");
-// const pool = new Pool({
-//   connectionString: process.env.DATABASE_URL,
-//   ssl: {
-//     rejectUnauthorized: false,
-//   },
-// });
-const { Client } = require("pg");
-
-const client = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
+const db = knex({
+  client: "pg",
+  connection: {
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
   },
 });
-
-client.connect();
-
-client.query(
-  "SELECT table_schema,table_name FROM information_schema.tables;",
-  (err, res) => {
-    if (err) throw err;
-    for (let row of res.rows) {
-      console.log(JSON.stringify(row));
-    }
-    client.end();
-  }
-);
 
 const server = express();
 server.use(express.json());
@@ -52,18 +22,6 @@ const PORT = process.env.PORT || 5000;
 
 server.get("/", (req, res) => {
   res.status(200).json("Success");
-  // .get("/db", async (req, res) => {
-  //   try {
-  //     const client = await pool.connect();
-  //     const result = await client.query("SELECT * FROM users");
-  //     const results = { results: result ? result.rows : null };
-  //     res.render("pages/db", results);
-  //     client.release();
-  //   } catch (err) {
-  //     console.error(err);
-  //     res.send("Error " + err);
-  //   }
-  // });
 });
 
 server.post("/signin", (req, res) => {
@@ -71,7 +29,7 @@ server.post("/signin", (req, res) => {
 });
 
 server.post("/register", (req, res) => {
-  register.handleRegister(req, res, client, bcrypt);
+  register.handleRegister(req, res, db, bcrypt);
 });
 
 server.get("/profile/:id", (req, res) => {
