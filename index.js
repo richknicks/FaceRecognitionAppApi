@@ -35,7 +35,7 @@ server.get("/", (req, res) => {
     .json("Success")
     .get("/db", async (req, res) => {
       try {
-        const client = await pool.connect();
+        const client = await db.connect();
         const result = await client.query("SELECT * FROM users");
         const results = { results: result ? result.rows : null };
         res.render("pages/db", results);
